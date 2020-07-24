@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/services.dart';
+import 'clipboard.dart';
 
 class RecipeHome extends StatefulWidget {
   @override
@@ -23,6 +27,7 @@ class _RecipeHomeState extends State<RecipeHome> {
       'South-American',
       'Greek'
     ];
+
     for (var i = 0; i < 8; i++) {
       imgpath = 'assets/images/' + i.toString() + '.jpg';
       children.add(Stack(fit: StackFit.expand, children: [
@@ -35,18 +40,26 @@ class _RecipeHomeState extends State<RecipeHome> {
             text[i],
             style: TextStyle(
               color: Colors.white,
-              fontSize: 65,
+              fontSize: 85,
               fontWeight: FontWeight.bold,
             ),
             maxLines: 2,
-            maxFontSize: 40,
+            maxFontSize: 50,
             textAlign: TextAlign.center,
           ),
         )
       ]));
     }
+    // children.add(FlatButton(
+    //   color: Colors.blue,
+    //   child: Text('ASDF'),
+    //   onPressed: () => true,
+    // ));
+    children.add(GetClipboard());
 
     return GridView.count(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
         primary: false,
         padding: EdgeInsets.fromLTRB(6.0, 10, 6.0, 10),
         crossAxisSpacing: 10,
@@ -54,6 +67,11 @@ class _RecipeHomeState extends State<RecipeHome> {
         crossAxisCount: columns,
         children: children);
   }
+
+  // _getFromClipboard() async {
+  //   // var result = await Clipboard.getData('text/plain');
+  //   // stderr.write(result);
+  // }
 
   changeGridCols() {
     if (columns > 1) {
@@ -72,20 +90,19 @@ class _RecipeHomeState extends State<RecipeHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'Stirr',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            'Stirr',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
+          ),
+          actions: [
+            IconButton(
+              icon: Icon(gridIcon),
+              onPressed: changeGridCols,
+            )
+          ],
         ),
-        actions: [
-          IconButton(
-            icon: Icon(gridIcon),
-            onPressed: changeGridCols,
-          )
-        ],
-      ),
-      body: _homeGrid(),
-    );
+        body: _homeGrid());
   }
 }
