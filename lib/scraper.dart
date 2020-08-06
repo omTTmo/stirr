@@ -1,10 +1,10 @@
-import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:html/parser.dart';
-import 'package:html/dom.dart';
+import 'dart:convert';
 
 Future initiate() async {
   var client = Client();
+  var recipeJSON;
   var url =
       'https://ohsheglows.com/2020/04/25/cozy-at-home-spicy-any-veggie-soup/';
   try {
@@ -14,12 +14,12 @@ Future initiate() async {
       var document = parse(response.body);
       dynamic recipeLD =
           document.querySelector('script[type="application/ld+json"]').text;
-      // Map<String, dynamic> recipe = jsonDecode(recipeLD);
+      recipeJSON = jsonDecode(recipeLD);
+      // print(recipeJSON['name']);
 
-      // print(recipe['recipeYield']);
-      // Recipe.fromJson(recipeLD);
     }
   } catch (e) {
+    print('Error:');
     print(e);
   }
 }
